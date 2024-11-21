@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>书签管理器 - 选项</title>
+    <link rel="stylesheet" href="options.css">
+</head>
+<body>
+    <div class="options-container">
+        <header class="header">
+            <div class="header-content">
+                <div class="header-left">
+                    <img src="/icons/icon128.png" alt="书签管理器图标" class="logo">
+                    <div class="title-container">
+                        <h1>书签管理器</h1>
+                        <div class="subtitle">
+                            <span class="version">版本 1.0</span>
+                            <span class="separator">•</span>
+                            <span class="description">简单而强大的书签管理工具</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <a href="#" class="header-link docs-link" target="_blank" title="使用文档">
+                        <svg class="docs-icon" viewBox="0 0 24 24" width="24" height="24">
+                            <path fill="currentColor" d="M14.59 2.59c-.38-.38-.89-.59-1.42-.59H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8.83c0-.53-.21-1.04-.59-1.41l-4.82-4.83zM15 18H9c-.55 0-1-.45-1-1s.45-1 1-1h6c.55 0 1 .45 1 1s-.45 1-1 1zm0-4H9c-.55 0-1-.45-1-1s.45-1 1-1h6c.55 0 1 .45 1 1s-.45 1-1 1zm-2-6V3.5L18.5 9H14c-.55 0-1-.45-1-1z"/>
+                        </svg>
+                    </a>
+                    <a href="https://github.com/yourusername/bookmark-manager" class="header-link github-link" target="_blank" title="GitHub仓库">
+                        <svg class="github-icon" height="24" width="24" viewBox="0 0 16 16">
+                            <path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="tabs">
+                <button class="tab-button active" data-tab="bookmark-manage">
+                    <svg class="tab-icon" viewBox="0 0 24 24" width="18" height="18">
+                        <path fill="currentColor" d="M17,3H7A2,2 0 0,0 5,5V21L12,18L19,21V5C19,3.89 18.1,3 17,3Z"/>
+                    </svg>
+                    书签管理
+                </button>
+                <button class="tab-button" data-tab="bookmark-edit">
+                    <svg class="tab-icon" viewBox="0 0 24 24" width="18" height="18">
+                        <path fill="currentColor" d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z"/>
+                    </svg>
+                    书签编辑
+                </button>
+                <button class="tab-button" data-tab="bookmark-category">
+                    <svg class="tab-icon" viewBox="0 0 24 24" width="18" height="18">
+                        <path fill="currentColor" d="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z"/>
+                    </svg>
+                    书签分类
+                </button>
+                <button class="tab-button" data-tab="bookmark-import">
+                    <svg class="tab-icon" viewBox="0 0 24 24" width="18" height="18">
+                        <path fill="currentColor" d="M14,12L10,8V11H2V13H10V16M20,18V6C20,4.89 19.1,4 18,4H6A2,2 0 0,0 4,6V9H6V6H18V18H6V15H4V18A2,2 0 0,0 6,20H18A2,2 0 0,0 20,18Z"/>
+                    </svg>
+                    导入/导出
+                </button>
+                <button class="tab-button" data-tab="settings">
+                    <svg class="tab-icon" viewBox="0 0 24 24" width="18" height="18">
+                        <path fill="currentColor" d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"/>
+                    </svg>
+                    设置
+                </button>
+            </div>
+
+            <div class="tab-content">
+                <div class="tab-pane active" id="bookmark-manage">
+                    <div class="bookmark-manage-header">
+                        <h2>书签管理</h2>
+                        <div class="bookmark-search">
+                            <input type="text" id="searchBookmark" placeholder="搜索书签...">
+                            <svg class="search-icon" viewBox="0 0 24 24" width="18" height="18">
+                                <path fill="currentColor" d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="bookmark-list">
+                        <!-- 书签列表将通过 JavaScript 动态生成 -->
+                        <div class="bookmark-empty-state" id="bookmarkEmptyState">
+                            <svg class="empty-icon" viewBox="0 0 24 24" width="48" height="48">
+                                <path fill="currentColor" d="M17,3H7A2,2 0 0,0 5,5V21L12,18L19,21V5C19,3.89 18.1,3 17,3Z"/>
+                            </svg>
+                            <p>暂无书签</p>
+                        </div>
+                    </div>
+
+                    <!-- 书签项模板 -->
+                    <template id="bookmarkTemplate">
+                        <div class="bookmark-item">
+                            <div class="bookmark-info">
+                                <img class="bookmark-favicon" src="" alt="">
+                                <a href="#" class="bookmark-title" target="_blank"></a>
+                            </div>
+                            <div class="bookmark-actions">
+                                <button class="action-btn edit-btn" title="编辑">
+                                    <svg viewBox="0 0 24 24" width="16" height="16">
+                                        <path fill="currentColor" d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z"/>
+                                    </svg>
+                                </button>
+                                <button class="action-btn delete-btn" title="删除">
+                                    <svg viewBox="0 0 24 24" width="16" height="16">
+                                        <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+                <div class="tab-pane" id="bookmark-edit">
+                    <div class="bookmark-edit-header">
+                        <h2>书签编辑</h2>
+                    </div>
+                    
+                    <div class="bookmark-edit-form">
+                        <div class="form-group">
+                            <label for="bookmarkTitle">书签名称</label>
+                            <input type="text" id="bookmarkTitle" class="form-input" placeholder="输入书签名称">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="bookmarkUrl">URL 地址</label>
+                            <input type="url" id="bookmarkUrl" class="form-input" placeholder="输入URL地址">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="bookmarkDescription">描述信息</label>
+                            <textarea id="bookmarkDescription" class="form-input" rows="3" placeholder="输入描述信息"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="bookmarkFolder">所属文件夹</label>
+                            <select id="bookmarkFolder" class="form-input">
+                                <option value="">选择文件夹</option>
+                                <!-- 文件夹选项将通过 JavaScript 动态生成 -->
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="bookmarkTags">标签</label>
+                            <div class="tags-container">
+                                <div class="tags-input-container">
+                                    <div class="tags-list" id="tagsList"></div>
+                                    <input type="text" id="bookmarkTags" class="tags-input" placeholder="输入标签...">
+                                </div>
+                                <div class="preset-tags" id="presetTags">
+                                    <span class="preset-tag" data-tag="前端">前端</span>
+                                    <span class="preset-tag" data-tag="后端">后端</span>
+                                    <span class="preset-tag" data-tag="服务器">服务器</span>
+                                    <span class="preset-tag" data-tag="JavaScript">JavaScript</span>
+                                    <span class="preset-tag" data-tag="Java">Java</span>
+                                    <span class="preset-tag" data-tag="GitHub">GitHub</span>
+                                    <span class="preset-tag" data-tag="脚本">脚本</span>
+                                    <span class="preset-tag" data-tag="油猴">油猴</span>
+                                    <span class="preset-tag" data-tag="Python">Python</span>
+                                    <span class="preset-tag" data-tag="工具">工具</span>
+                                    <span class="preset-tag" data-tag="框架">框架</span>
+                                    <span class="preset-tag" data-tag="文档">文档</span>
+                                    <button class="add-tag-btn" id="addCustomTag" title="添加自定义标签">
+                                        <svg viewBox="0 0 24 24" width="12" height="12">
+                                            <path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/>
+                                        </svg>
+                                        添加标签
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button id="saveBookmark" class="primary-btn">保存</button>
+                            <button id="cancelEdit" class="secondary-btn">取消</button>
+                        </div>
+                    </div>
+
+                    <div class="bookmark-edit-empty" id="bookmarkEditEmpty">
+                        <svg class="empty-icon" viewBox="0 0 24 24" width="48" height="48">
+                            <path fill="currentColor" d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z"/>
+                        </svg>
+                        <p>请从书签管理页面选择要编辑的书签</p>
+                    </div>
+                </div>
+                <div class="tab-pane" id="bookmark-category">
+                    <div class="category-header">
+                        <h2>书签分类</h2>
+                        <div class="view-switcher">
+                            <button class="view-btn active" data-view="tags">
+                                <svg viewBox="0 0 24 24" width="16" height="16">
+                                    <path fill="currentColor" d="M21.41,11.58L12.41,2.58C12.05,2.22 11.55,2 11,2H4A2,2 0 0,0 2,4V11C2,11.55 2.22,12.05 2.59,12.41L11.59,21.41C11.95,21.78 12.45,22 13,22C13.55,22 14.05,21.78 14.41,21.41L21.41,14.41C21.78,14.05 22,13.55 22,13C22,12.45 21.77,11.94 21.41,11.58M5.5,7A1.5,1.5 0 0,1 4,5.5A1.5,1.5 0 0,1 5.5,4A1.5,1.5 0 0,1 7,5.5A1.5,1.5 0 0,1 5.5,7Z"/>
+                                </svg>
+                                标签视图
+                            </button>
+                            <button class="view-btn" data-view="folders">
+                                <svg viewBox="0 0 24 24" width="16" height="16">
+                                    <path fill="currentColor" d="M10,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V8C22,6.89 21.1,6 20,6H12L10,4Z"/>
+                                </svg>
+                                文件夹视图
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 标签视图 -->
+                    <div class="category-view active" id="tagsView">
+                        <div class="tags-filter">
+                            <input type="text" class="filter-input" placeholder="搜索标签...">
+                        </div>
+                        <div class="tags-cloud">
+                            <!-- 标签云将通过JavaScript动态生成 -->
+                        </div>
+                        <div class="tagged-bookmarks">
+                            <!-- 选中标签的书签列表将在这里显示 -->
+                        </div>
+                    </div>
+
+                    <!-- 文件夹视图 -->
+                    <div class="category-view" id="foldersView">
+                        <div class="folder-tree">
+                            <!-- 文件夹树将通过JavaScript动态生成 -->
+                        </div>
+                        <div class="folder-content">
+                            <!-- 选中文件夹的内容将在这里显示 -->
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="bookmark-import">
+                    <h2>导入/导出</h2>
+                    <!-- 导入导出内容将在后续添加 -->
+                </div>
+                <div class="tab-pane" id="settings">
+                    <h2>设置</h2>
+                    <!-- 设置内容将在后续添加 -->
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="options.js"></script>
+</body>
+</html>
