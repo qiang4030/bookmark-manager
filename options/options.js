@@ -392,7 +392,7 @@ document.addEventListener('DOMContentLoaded', () => {
         bookmarkTitleInput.value = bookmark.title || '';
         bookmarkUrlInput.value = bookmark.url || '';
         
-        // 获取并填充描述信息（如果存在）
+        // 获取填充描述信息（如果存在）
         chrome.storage.local.get(['bookmarkDescriptions'], (result) => {
             const descriptions = result.bookmarkDescriptions || {};
             bookmarkDescriptionInput.value = descriptions[bookmark.id] || '';
@@ -785,7 +785,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const bookmarkTags = result.bookmarkTags || {};
             const matchedBookmarkIds = Object.entries(bookmarkTags)
                 .filter(([_, tags]) => {
-                    // 检查是否匹配所有选中的标签（包括父级标签）
+                    // 检查是否匹配所有选中的标签（包括父签）
                     return selectedTags.every(selectedTag => {
                         return tags.some(tag => 
                             tag === selectedTag || tag.startsWith(selectedTag + '/'));
@@ -1066,4 +1066,71 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     }
+
+    // 监听来自 background 的消息
+    chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+        if (message.type === 'EDIT_BOOKMARK') {
+            console.log('收到编辑书签消息:', message); // 添加调试日志
+            
+            // 确保所有DOM元素都已加载
+            setTimeout(() => {
+                // 切换到编辑标签页
+                const editTab = document.querySelector('[data-tab="bookmark-edit"]');
+                if (editTab) {
+                    editTab.click();
+                } else {
+                    console.error('未找到编辑标签页元素');
+                }
+                
+                // 加载书签信息
+                chrome.bookmarks.get(message.bookmarkId, (bookmarks) => {
+                    if (bookmarks && bookmarks[0]) {
+                        const bookmark = bookmarks[0];
+                        
+                        // 显示编辑表单
+                        if (bookmarkEditForm && bookmarkEditEmpty) {
+                            bookmarkEditForm.style.display = 'block';
+                            bookmarkEditEmpty.style.display = 'none';
+                        }
+                        
+                        // 填充表单数据
+                        if (bookmarkTitleInput && bookmarkUrlInput) {
+                            bookmarkTitleInput.value = bookmark.title || '';
+                            bookmarkUrlInput.value = bookmark.url || '';
+                        }
+                        
+                        // 使用从页面获取的描述信息
+                        const pageDescription = message.description;
+                        
+                        // 加载额外信息(描述、标签等)
+                        chrome.storage.local.get(['bookmarkDescriptions', 'bookmarkTags'], (result) => {
+                            const descriptions = result.bookmarkDescriptions || {};
+                            const tags = result.bookmarkTags || {};
+                            
+                            if (bookmarkDescriptionInput) {
+                                bookmarkDescriptionInput.value = descriptions[bookmark.id] || pageDescription || '';
+                            }
+                            
+                            // 清空并填充标签
+                            if (currentTags && tagsList) {
+                                currentTags.clear();
+                                tagsList.innerHTML = '';
+                                if (tags[bookmark.id]) {
+                                    tags[bookmark.id].forEach(tag => addTag(tag));
+                                }
+                            }
+                        });
+                        
+                        // 加载并选择当前文件夹
+                        if (typeof loadBookmarkFolders === 'function') {
+                            loadBookmarkFolders(bookmark.parentId);
+                        }
+                        
+                        // 保存当前编辑的书签ID
+                        currentEditingBookmark = bookmark;
+                    }
+                });
+            }, 100); // 给予一个小延迟确保DOM已完全加载
+        }
+    });
 });

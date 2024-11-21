@@ -3,7 +3,7 @@
   "name": "Bookmark Manager",
   "version": "1.0",
   "description": "A simple Chrome extension to manage bookmarks.",
-  "permissions": ["bookmarks", "storage", "contextMenus"],
+  "permissions": ["bookmarks", "storage", "contextMenus", "scripting", "activeTab"],
   "host_permissions": ["<all_urls>"],
   "background": {
     "service_worker": "/scripts/background.js"
