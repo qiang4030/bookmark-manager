@@ -933,7 +933,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // 添加标签自动完成
+        // ���加标签自动完成
         function setupTagAutocomplete() {
             let allTags = new Set();
             
@@ -1121,7 +1121,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             }
                         });
                         
-                        // 加载并选择当前文件夹
+                        // 加载选择当前文件夹
                         if (typeof loadBookmarkFolders === 'function') {
                             loadBookmarkFolders(bookmark.parentId);
                         }
@@ -1271,4 +1271,228 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     });
+
+    // 在导入/导出标签页添加导出功能
+    function exportBookmarks() {
+        // 获取所有书签数据
+        chrome.bookmarks.getTree(async (tree) => {
+            // 获取额外信息(描述和标签)
+            const { bookmarkDescriptions, bookmarkTags } = await chrome.storage.local.get([
+                'bookmarkDescriptions',
+                'bookmarkTags'
+            ]);
+            
+            // 构建导出数据
+            const exportData = {
+                bookmarks: tree,
+                descriptions: bookmarkDescriptions || {},
+                tags: bookmarkTags || {},
+                exportDate: new Date().toISOString(),
+                version: '1.0'
+            };
+            
+            // 创建下载
+            const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const date = new Date().toISOString().split('T')[0];
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `bookmarks_backup_${date}.json`;
+            a.click();
+            
+            URL.revokeObjectURL(url);
+            toast.success('书签导出成功');
+        });
+    }
+
+    // 导入功能
+    async function importBookmarks(file) {
+        try {
+            const text = await file.text();
+            const data = JSON.parse(text);
+            
+            // 验证数据格��
+            if (!data.bookmarks || !Array.isArray(data.bookmarks)) {
+                throw new Error('无效的书签数据格式');
+            }
+            
+            // 确认导入
+            const confirmed = await showConfirm(
+                '导入将覆盖现有的书签描述和标签信息，是否继续？'
+            );
+            
+            if (!confirmed) return;
+            
+            // 导入书签
+            await importBookmarkTree(data.bookmarks[0]);
+            
+            // 导入额外信息
+            await chrome.storage.local.set({
+                bookmarkDescriptions: data.descriptions || {},
+                bookmarkTags: data.tags || {}
+            });
+            
+            // 刷新页面显示
+            loadBookmarks();
+            toast.success('书签导入成功');
+            
+        } catch (error) {
+            console.error('Import error:', error);
+            toast.error('导入失败：' + error.message);
+        }
+    }
+
+    // 递归导入书签树
+    async function importBookmarkTree(node, parentId = null) {
+        if (node.url) {
+            // 创建书签
+            await chrome.bookmarks.create({
+                parentId: parentId,
+                title: node.title,
+                url: node.url
+            });
+        } else if (node.children) {
+            // 创建文件夹
+            const folder = await chrome.bookmarks.create({
+                parentId: parentId,
+                title: node.title
+            });
+            
+            // 递归处理子项
+            for (const child of node.children) {
+                await importBookmarkTree(child, folder.id);
+            }
+        }
+    }
+
+    // 导出按钮点击事件
+    const exportBtn = document.getElementById('exportBtn');
+    exportBtn.addEventListener('click', exportBookmarks);
+    
+    // 导入文件选择事件
+    const importInput = document.getElementById('importInput');
+    importInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            importBookmarks(file);
+            // 清空input，允许重复导入同一文件
+            e.target.value = '';
+        }
+    });
+
+    // 开发测试功能
+    const clearAllBookmarks = document.getElementById('clearAllBookmarks');
+    const clearAllTags = document.getElementById('clearAllTags');
+    const clearAllStorage = document.getElementById('clearAllStorage');
+    const refreshDebugInfo = document.getElementById('refreshDebugInfo');
+    const debugOutput = document.getElementById('debugOutput');
+
+    // 删除所有书签
+    clearAllBookmarks.addEventListener('click', async () => {
+        const confirmed = await showConfirm('⚠️ 警告：此操作将删除所有书签，且无法恢复！确定要继续吗？');
+        if (confirmed) {
+            try {
+                const tree = await chrome.bookmarks.getTree();
+                // 递归删除所有书签
+                async function deleteBookmarks(node) {
+                    if (node.children) {
+                        for (const child of node.children) {
+                            await deleteBookmarks(child);
+                        }
+                    }
+                    if (node.id && node.id !== '0' && node.id !== '1' && node.id !== '2') {
+                        await chrome.bookmarks.remove(node.id);
+                    }
+                }
+                
+                for (const root of tree) {
+                    await deleteBookmarks(root);
+                }
+                
+                toast.success('所有书签已删除');
+                loadBookmarks(); // 刷新显示
+            } catch (error) {
+                console.error('Error clearing bookmarks:', error);
+                toast.error('删除失败：' + error.message);
+            }
+        }
+    });
+
+    // 清除所有标签
+    clearAllTags.addEventListener('click', async () => {
+        const confirmed = await showConfirm('确定要清除所有标签信息吗？');
+        if (confirmed) {
+            try {
+                await chrome.storage.local.remove(['bookmarkTags']);
+                toast.success('所有标签已清除');
+                loadBookmarks(); // 刷新显示
+            } catch (error) {
+                console.error('Error clearing tags:', error);
+                toast.error('清除失败：' + error.message);
+            }
+        }
+    });
+
+    // 清除所有存储
+    clearAllStorage.addEventListener('click', async () => {
+        const confirmed = await showConfirm('⚠️ 警告：此操作将清除所有存储的数据，包括描述和标签！确定要继续吗？');
+        if (confirmed) {
+            try {
+                await chrome.storage.local.clear();
+                toast.success('所有存储数据已清除');
+                loadBookmarks(); // 刷新显示
+            } catch (error) {
+                console.error('Error clearing storage:', error);
+                toast.error('清除失败：' + error.message);
+            }
+        }
+    });
+
+    // 刷新调试信息
+    async function updateDebugInfo() {
+        try {
+            const [tree, storage] = await Promise.all([
+                chrome.bookmarks.getTree(),
+                chrome.storage.local.get(null)
+            ]);
+            
+            const debugInfo = {
+                bookmarksCount: 0,
+                foldersCount: 0,
+                tagsCount: 0,
+                storageSize: JSON.stringify(storage).length,
+                storage: storage
+            };
+            
+            // 统计书签和文件夹数量
+            function countItems(node) {
+                if (node.url) debugInfo.bookmarksCount++;
+                if (node.children) {
+                    debugInfo.foldersCount++;
+                    node.children.forEach(countItems);
+                }
+            }
+            tree.forEach(countItems);
+            
+            // 统计标签数量
+            if (storage.bookmarkTags) {
+                const allTags = new Set();
+                Object.values(storage.bookmarkTags).forEach(tags => {
+                    tags.forEach(tag => allTags.add(tag));
+                });
+                debugInfo.tagsCount = allTags.size;
+            }
+            
+            debugOutput.textContent = JSON.stringify(debugInfo, null, 2);
+        } catch (error) {
+            console.error('Error updating debug info:', error);
+            debugOutput.textContent = 'Error: ' + error.message;
+        }
+    }
+
+    refreshDebugInfo.addEventListener('click', updateDebugInfo);
+
+    // 初始加载调试信息
+    updateDebugInfo();
 });

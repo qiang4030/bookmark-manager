@@ -68,6 +68,12 @@
                     </svg>
                     设置
                 </button>
+                <button class="tab-button" data-tab="dev-test">
+                    <svg class="tab-icon" viewBox="0 0 24 24" width="18" height="18">
+                        <path fill="currentColor" d="M20.59,12l-3.3-3.3C17.22,8.6,17,8.3,17,8c0-0.3,0.22-0.6,0.29-0.7l3.3-3.3c0.39-0.39,0.39-1.02,0-1.41 c-0.39-0.39-1.02-0.39-1.41,0l-3.3,3.3C15.6,6.22,15.3,6,15,6c-0.3,0-0.6,0.22-0.7,0.29l-3.3-3.3c-0.39-0.39-1.02-0.39-1.41,0 c-0.39,0.39-0.39,1.02,0,1.41l3.3,3.3C12.78,7.9,13,8.2,13,8.5c0,0.3-0.22,0.6-0.29,0.7l-3.3,3.3c-0.39,0.39-0.39,1.02,0,1.41 c0.39,0.39,1.02,0.39,1.41,0l3.3-3.3c0.28,0.07,0.58,0.29,0.88,0.29s0.6-0.22,0.7-0.29l3.3,3.3c0.39,0.39,1.02,0.39,1.41,0 C20.98,13.02,20.98,12.39,20.59,12z"/>
+                    </svg>
+                    开发测试
+                </button>
             </div>
 
             <div class="tab-content">
@@ -83,7 +89,7 @@
                     </div>
 
                     <div class="bookmark-list">
-                        <!-- 书签列���将通过 JavaScript 动态生成 -->
+                        <!-- 书签列将通过 JavaScript 动态生成 -->
                         <div class="bookmark-empty-state" id="bookmarkEmptyState">
                             <svg class="empty-icon" viewBox="0 0 24 24" width="48" height="48">
                                 <path fill="currentColor" d="M17,3H7A2,2 0 0,0 5,5V21L12,18L19,21V5C19,3.89 18.1,3 17,3Z"/>
@@ -229,12 +235,82 @@
                     </div>
                 </div>
                 <div class="tab-pane" id="bookmark-import">
-                    <h2>导入/导出</h2>
-                    <!-- 导入导出内容将在后续添加 -->
+                    <div class="import-export-header">
+                        <h2>导入/导出</h2>
+                    </div>
+                    
+                    <div class="import-export-content">
+                        <!-- 导出部分 -->
+                        <div class="export-section">
+                            <h3>导出书签</h3>
+                            <p class="section-desc">导出所有书签数据，包括描述和标签信息</p>
+                            <button id="exportBtn" class="primary-btn">
+                                <svg viewBox="0 0 24 24" width="16" height="16">
+                                    <path fill="currentColor" d="M19,12V13.5A2.5,2.5 0 0,1 16.5,16H7.5A2.5,2.5 0 0,1 5,13.5V12H6.5V13.5A1,1 0 0,0 7.5,14.5H16.5A1,1 0 0,0 17.5,13.5V12H19M12,4L8,8H11V14H13V8H16L12,4Z"/>
+                                </svg>
+                                导出书签
+                            </button>
+                        </div>
+                        
+                        <!-- 导入部分 -->
+                        <div class="import-section">
+                            <h3>导入书签</h3>
+                            <p class="section-desc">从备份文件中恢复书签数据</p>
+                            <div class="import-area">
+                                <input type="file" id="importInput" accept=".json" class="file-input" />
+                                <label for="importInput" class="file-label">
+                                    <svg viewBox="0 0 24 24" width="16" height="16">
+                                        <path fill="currentColor" d="M19,12V13.5A2.5,2.5 0 0,1 16.5,16H7.5A2.5,2.5 0 0,1 5,13.5V12H6.5V13.5A1,1 0 0,0 7.5,14.5H16.5A1,1 0 0,0 17.5,13.5V12H19M12,4L8,8H11V14H13V8H16L12,4Z"/>
+                                    </svg>
+                                    选择备份文件
+                                </label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="tab-pane" id="settings">
                     <h2>设置</h2>
                     <!-- 设置内容将在后续添加 -->
+                </div>
+                <div class="tab-pane" id="dev-test">
+                    <div class="dev-test-header">
+                        <h2>开发测试</h2>
+                        <p class="warning-text">⚠️ 警告：此页面中的操作可能会导致数据丢失，仅供开发测试使用</p>
+                    </div>
+                    
+                    <div class="dev-test-content">
+                        <div class="test-section danger-zone">
+                            <h3>危险操作区</h3>
+                            <div class="test-actions">
+                                <button id="clearAllBookmarks" class="danger-btn">
+                                    <svg viewBox="0 0 24 24" width="16" height="16">
+                                        <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"/>
+                                    </svg>
+                                    删除所有书签
+                                </button>
+                                <button id="clearAllTags" class="danger-btn">
+                                    <svg viewBox="0 0 24 24" width="16" height="16">
+                                        <path fill="currentColor" d="M21.41,11.58L12.41,2.58C12.05,2.22 11.55,2 11,2H4A2,2 0 0,0 2,4V11C2,11.55 2.22,12.05 2.59,12.41L11.59,21.41C11.95,21.78 12.45,22 13,22C13.55,22 14.05,21.78 14.41,21.41L21.41,14.41C21.78,14.05 22,13.55 22,13C22,12.45 21.77,11.94 21.41,11.58Z"/>
+                                    </svg>
+                                    清除所有标签
+                                </button>
+                                <button id="clearAllStorage" class="danger-btn">
+                                    <svg viewBox="0 0 24 24" width="16" height="16">
+                                        <path fill="currentColor" d="M15,2H9A2,2 0 0,0 7,4V20A2,2 0 0,0 9,22H15A2,2 0 0,0 17,20V4A2,2 0 0,0 15,2M15,20H9V4H15V20M11,6H13V8H11V6M11,10H13V18H11V10"/>
+                                    </svg>
+                                    清除所有存储
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="test-section">
+                            <h3>调试信息</h3>
+                            <div class="debug-info">
+                                <pre id="debugOutput"></pre>
+                                <button id="refreshDebugInfo" class="secondary-btn">刷新信息</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </main>
@@ -256,5 +332,6 @@
             </div>
         </div>
     </div>
+    <script type="module" src="js/main.js"></script>
 </body>
 </html>

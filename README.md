@@ -104,3 +104,25 @@ bookmark-manager/
 9. web_accessible_resources：可访问资源配置，包括样式文件
 10. options_page：弹窗界面文件
 11. browser_action：浏览器动作配置，包括默认图标、默认标题
+
+## 优化
+将 options.js 按功能模块拆分，采用模块化的方式重构。
+```
+options/
+├── js/
+│   ├── modules/
+│   │   ├── bookmarkManager.js    // 书签管理相关
+│   │   ├── tagManager.js         // 标签管理相关
+│   │   ├── categoryView.js       // 分类视图相关
+│   │   ├── importExport.js       // 导入导出功能
+│   │   ├── devTools.js          // 开发测试工具
+│   │   ├── ui/
+│   │   │   ├── toast.js         // Toast 通知
+│   │   │   ├── dialog.js        // 对话框
+│   │   │   └── tabs.js          // 标签页切换
+│   │   └── utils/
+│   │       ├── storage.js       // 存储相关工具
+│   │       └── domUtils.js      // DOM 操作工具
+│   └── main.js                  // 主入口文件
+└── options.html
+```

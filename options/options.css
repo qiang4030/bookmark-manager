@@ -949,7 +949,7 @@ textarea.form-input {
     }
 }
 
-/* 确认对话框样式 */
+/* 确���对话框样式 */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -1003,4 +1003,131 @@ textarea.form-input {
         transform: translateY(0);
         opacity: 1;
     }
+}
+
+/* 导入导出页面样式 */
+.import-export-content {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.export-section,
+.import-section {
+    background: #fff;
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.section-desc {
+    color: #666;
+    margin-bottom: 16px;
+    font-size: 14px;
+}
+
+.import-area {
+    border: 2px dashed #e0e0e0;
+    border-radius: 8px;
+    padding: 24px;
+    text-align: center;
+    transition: all 0.2s ease;
+}
+
+.import-area:hover {
+    border-color: #2196F3;
+    background-color: #f0f7ff;
+}
+
+.file-input {
+    display: none;
+}
+
+.file-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background-color: #2196F3;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.file-label:hover {
+    background-color: #1976D2;
+}
+
+/* 开发测试页面样式 */
+.dev-test-content {
+    max-width: 800px;
+}
+
+.warning-text {
+    color: #f44336;
+    font-weight: 500;
+    margin-bottom: 24px;
+    padding: 8px 16px;
+    background-color: #ffebee;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.test-section {
+    background: #fff;
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.test-section.danger-zone {
+    border: 1px solid #ffcdd2;
+    background-color: #fff5f5;
+}
+
+.test-section h3 {
+    color: #333;
+    margin-bottom: 16px;
+    font-size: 16px;
+}
+
+.test-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.danger-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background-color: #fff;
+    color: #f44336;
+    border: 1px solid #f44336;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.danger-btn:hover {
+    background-color: #f44336;
+    color: #fff;
+}
+
+.debug-info {
+    background: #f5f5f5;
+    border-radius: 4px;
+    padding: 16px;
+}
+
+#debugOutput {
+    font-family: monospace;
+    white-space: pre-wrap;
+    margin-bottom: 16px;
+    font-size: 13px;
+    line-height: 1.5;
 }
