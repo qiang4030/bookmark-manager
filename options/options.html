@@ -214,7 +214,7 @@
                     <!-- 标签视图 -->
                     <div class="category-view active" id="tagsView">
                         <div class="tags-filter">
-                            <input type="text" class="filter-input" placeholder="搜索标签...">
+                            <input type="text" class="filter-input" placeholder="搜���标签...">
                         </div>
                         <div class="tags-cloud">
                             <!-- 标签云将通过JavaScript动态生成 -->
@@ -256,6 +256,12 @@
                         <div class="import-section">
                             <h3>导入书签</h3>
                             <p class="section-desc">从备份文件中恢复书签数据</p>
+                            <div class="notice-text">
+                                <svg viewBox="0 0 24 24" width="16" height="16">
+                                    <path fill="currentColor" d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"/>
+                                </svg>
+                                注意：导入的书签将会出现在"其他书签"文件夹中，这是 Chrome 的默认行为
+                            </div>
                             <div class="import-area">
                                 <input type="file" id="importInput" accept=".json" class="file-input" />
                                 <label for="importInput" class="file-label">
