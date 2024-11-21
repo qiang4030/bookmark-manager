@@ -1133,4 +1133,142 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 100); // 给予一个小延迟确保DOM已完全加载
         }
     });
+
+    // Toast 通知系统
+    const toast = {
+        show(message, type = 'info', duration = 3000) {
+            const container = document.querySelector('.toast-container');
+            const toastElement = document.createElement('div');
+            toastElement.className = `toast ${type}`;
+            toastElement.textContent = message;
+
+            container.appendChild(toastElement);
+
+            // 自动消失
+            setTimeout(() => {
+                toastElement.style.animation = 'fadeOut 0.3s ease-out';
+                setTimeout(() => {
+                    container.removeChild(toastElement);
+                }, 300);
+            }, duration);
+        },
+        
+        success(message, duration) {
+            this.show(message, 'success', duration);
+        },
+        
+        error(message, duration) {
+            this.show(message, 'error', duration);
+        },
+        
+        warning(message, duration) {
+            this.show(message, 'warning', duration);
+        }
+    };
+
+    // 自定义确认对话框
+    function showConfirm(message) {
+        return new Promise((resolve) => {
+            const dialog = document.getElementById('confirmDialog');
+            const messageElement = document.getElementById('confirmMessage');
+            const okButton = document.getElementById('confirmOk');
+            const cancelButton = document.getElementById('confirmCancel');
+
+            messageElement.textContent = message;
+            dialog.style.display = 'flex';
+
+            function handleClose(result) {
+                dialog.style.display = 'none';
+                resolve(result);
+            }
+
+            okButton.onclick = () => handleClose(true);
+            cancelButton.onclick = () => handleClose(false);
+            
+            // 点击遮罩层关闭
+            dialog.onclick = (e) => {
+                if (e.target === dialog) {
+                    handleClose(false);
+                }
+            };
+        });
+    }
+
+    // 替换原有的 alert 和 confirm 调用
+    // 例如，将删除书签的确认对话框改为：
+    async function deleteBookmark(bookmark, item) {
+        const confirmed = await showConfirm(`确定要删除书签 "${bookmark.title}" 吗？`);
+        if (confirmed) {
+            try {
+                chrome.bookmarks.remove(bookmark.id, () => {
+                    if (chrome.runtime.lastError) {
+                        toast.error('删除失败：' + chrome.runtime.lastError.message);
+                        return;
+                    }
+                    item.remove();
+                    if (bookmarkList.children.length === 1) {
+                        showEmptyState();
+                    }
+                    toast.success('书签已删除');
+                });
+            } catch (error) {
+                console.error('Error in deleteBookmark:', error);
+                toast.error('删除失败');
+            }
+        }
+    }
+
+    // 修改保存书签的成功提示
+    saveBookmarkBtn.addEventListener('click', () => {
+        if (!currentEditingBookmark) return;
+        
+        const updates = {
+            title: bookmarkTitleInput.value.trim(),
+            url: bookmarkUrlInput.value.trim()
+        };
+        
+        // 果选择了新文件夹，则移动书签
+        if (bookmarkFolderSelect.value && bookmarkFolderSelect.value !== currentEditingBookmark.parentId) {
+            chrome.bookmarks.move(currentEditingBookmark.id, {
+                parentId: bookmarkFolderSelect.value
+            });
+        }
+        
+        // 更新书签基本信息
+        chrome.bookmarks.update(currentEditingBookmark.id, updates, (result) => {
+            if (chrome.runtime.lastError) {
+                toast.error('保存失败：' + chrome.runtime.lastError.message);
+                return;
+            }
+            
+            // 保存描述信息到storage
+            const description = bookmarkDescriptionInput.value.trim();
+            chrome.storage.local.get(['bookmarkDescriptions'], (result) => {
+                const descriptions = result.bookmarkDescriptions || {};
+                if (description) {
+                    descriptions[currentEditingBookmark.id] = description;
+                } else {
+                    delete descriptions[currentEditingBookmark.id];
+                }
+                
+                chrome.storage.local.set({ bookmarkDescriptions: descriptions }, () => {
+                    // 保存标签
+                    chrome.storage.local.get(['bookmarkTags'], (result) => {
+                        const bookmarkTags = result.bookmarkTags || {};
+                        bookmarkTags[currentEditingBookmark.id] = Array.from(currentTags);
+                        
+                        chrome.storage.local.set({ bookmarkTags }, () => {
+                            // 重新加载书签列表
+                            loadBookmarks();
+                            // 重置编辑状态
+                            resetEditForm();
+                            // 切换回管理页面
+                            document.querySelector('[data-tab="bookmark-manage"]').click();
+                        });
+                    });
+                    toast.success('书签保存成功');
+                });
+            });
+        });
+    });
 });

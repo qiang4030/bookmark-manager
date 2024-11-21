@@ -896,3 +896,111 @@ textarea.form-input {
     width: 100%;
     padding-left: 4px;
 }
+
+/* Toast 样式 */
+.toast-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.toast {
+    background: #333;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 4px;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    animation: slideIn 0.3s ease-out;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.toast.success {
+    background: #4caf50;
+}
+
+.toast.error {
+    background: #f44336;
+}
+
+.toast.warning {
+    background: #ff9800;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+/* 确认对话框样式 */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 8px;
+    width: 400px;
+    max-width: 90%;
+    animation: modalShow 0.3s ease-out;
+}
+
+.modal-header {
+    padding: 16px;
+    border-bottom: 1px solid #eee;
+}
+
+.modal-title {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.modal-body {
+    padding: 16px;
+}
+
+.modal-footer {
+    padding: 16px;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+@keyframes modalShow {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
